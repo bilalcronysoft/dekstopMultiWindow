@@ -93,9 +93,9 @@ FlutterWindow::FlutterWindow(
       Scale(target_point.x, scale_factor_), Scale(target_point.y, scale_factor_),
       Scale(1280, scale_factor_), Scale(720, scale_factor_),
       nullptr, nullptr, GetModuleHandle(nullptr), this);
-  HWND hwnd = window.GetHandle();
+//  HWND hwnd = window.GetHandle();
 
-  auto windowHDC = GetDC(hwnd);
+  auto windowHDC = GetDC(window_handle);
   int fullscreenWidth  = GetDeviceCaps(windowHDC, DESKTOPHORZRES);
   int fullscreenHeight = GetDeviceCaps(windowHDC, DESKTOPVERTRES);
   int colourBits       = GetDeviceCaps(windowHDC, BITSPIXEL);
@@ -114,11 +114,11 @@ FlutterWindow::FlutterWindow(
                                           DM_BITSPERPEL |
                                           DM_DISPLAYFREQUENCY;
 
-  SetWindowLongPtr(hwnd, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_TOPMOST);
-  SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-  SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fullscreenWidth, fullscreenHeight, SWP_SHOWWINDOW);
+  SetWindowLongPtr(window_handle, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_TOPMOST);
+  SetWindowLongPtr(window_handle, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+  SetWindowPos(window_handle, HWND_TOPMOST, 0, 0, fullscreenWidth, fullscreenHeight, SWP_SHOWWINDOW);
   isChangeSuccessful = ChangeDisplaySettings(&fullscreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL;
-  ShowWindow(hwnd, SW_MAXIMIZE);
+  ShowWindow(window_handle, SW_MAXIMIZE);
   ::MSG msg;
   RECT frame;
   GetClientRect(window_handle, &frame);
